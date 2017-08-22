@@ -55,7 +55,7 @@ public class CategoriesIntegrationForProbateTest extends IntegrationTestBase {
                 .then().got(FixedFeeDto.class, (fee -> assertThat(fee).isEqualTo(fixedFeeDtoWith()
                 .code("X0026")
                 .description("Civil Court fees - Money Claims Online - Claim Amount - 500.01 upto 1000 GBP")
-                .amount(6000)
+                .amount(600000)
                 .build())));
     }
 

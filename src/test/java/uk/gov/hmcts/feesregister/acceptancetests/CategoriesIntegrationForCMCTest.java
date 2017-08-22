@@ -2,23 +2,89 @@ package uk.gov.hmcts.feesregister.acceptancetests;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import uk.gov.hmcts.fees.register.api.contract.CalculationDto;
-import uk.gov.hmcts.fees.register.api.contract.CategoryDto;
-import uk.gov.hmcts.fees.register.api.contract.FixedFeeDto;
-import uk.gov.hmcts.fees.register.api.contract.RangeGroupDto;
+import uk.gov.hmcts.fees.register.api.contract.*;
 import uk.gov.hmcts.feesregister.acceptancetests.dsl.FeesRegisterTestDsl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.fees.register.api.contract.CategoryDto.categoryDtoWith;
+import static uk.gov.hmcts.fees.register.api.contract.CategoryUpdateDto.categoryUpdateDtoWith;
 import static uk.gov.hmcts.fees.register.api.contract.FixedFeeDto.fixedFeeDtoWith;
+import static uk.gov.hmcts.fees.register.api.contract.PercentageFeeDto.percentageFeeDtoWith;
 import static uk.gov.hmcts.fees.register.api.contract.RangeGroupDto.rangeGroupDtoWith;
+import static uk.gov.hmcts.fees.register.api.contract.RangeGroupUpdateDto.rangeGroupUpdateDtoWith;
+
 public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
 
     @Autowired
     private FeesRegisterTestDsl scenario;
+
+    private CategoryUpdateDto.CategoryUpdateDtoBuilder proposeCategory = categoryUpdateDtoWith()
+            .description("New Description")
+            .rangeGroupCode("cmc-online")
+            .feeCodes(asList("X0026", "X0027"));
+
+    @Test
+    public void createCategoriesCode201() throws IOException {
+        scenario.given().userId("80")
+                .when().createCategory(proposeCategory)
+                .then().created((categoryDto -> {
+                    assertThat(categoryDto.getDescription()).isEqualTo("New Description");
+                })
+        );
+    }
+
+    private PercentageFeeDto.PercentageFeeDtoBuilder proposePercentage = percentageFeeDtoWith()
+            .code("X0434")
+            .description("Civil Court fees - Money Claims Online - Claim Amount - 10000.01 upto 15000 GBP. Fees are 4.5% of the claim value")
+            .percentage(BigDecimal.valueOf(4.5));
+
+    @Test
+    public void createPercentage201() throws IOException {
+        scenario.given().userId("80")
+                .when().createPercentage(proposePercentage)
+                .then().createdPercentage((feeDto -> {
+                    assertThat(feeDto.getDescription()).isEqualTo("Civil Court fees - Money Claims Online - Claim Amount - 10000.01 upto 15000 GBP. Fees are 4.5% of the claim value");
+                })
+        );
+    }
+
+    private FixedFeeDto.FixedFeeDtoBuilder proposeFees = fixedFeeDtoWith()
+            .code("X0999")
+            .description("New Description")
+            .amount(101);
+
+    @Test
+    public void createFeesCode201() throws IOException {
+        scenario.given().userId("80")
+                .when().createFees(proposeFees)
+                .then().createdFees((feeDto -> {
+                    assertThat(feeDto.getDescription()).isEqualTo("New Description");
+                })
+        );
+    }
+
+    private RangeGroupUpdateDto.RangeGroupUpdateDtoBuilder proposeRangeGroup = rangeGroupUpdateDtoWith()
+            .description("New Description")
+            .ranges(asList(
+                    new RangeGroupUpdateDto.RangeUpdateDto(0, 1000, "X0046"),
+                    new RangeGroupUpdateDto.RangeUpdateDto(1001, null, "X0047")
+
+            ));
+
+    @Test
+    public void createRangeGroup201() throws IOException {
+        scenario.given().userId("80")
+                .when().createRangeGroups(proposeRangeGroup)
+                .then().createdRangeGroups((reangeGroupDto -> {
+                    assertThat(reangeGroupDto.getDescription()).isEqualTo("New Description");
+                })
+        );
+    }
 
     @Test
     public void findAllCategories() throws IOException, NoSuchFieldException {
@@ -53,7 +119,7 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
                 .then().got(FixedFeeDto.class, (fee -> assertThat(fee).isEqualTo(fixedFeeDtoWith()
                 .code("X0026")
                 .description("Civil Court fees - Money Claims Online - Claim Amount - 500.01 upto 1000 GBP")
-                .amount(6000)
+                .amount(600000)
                 .build())));
     }
 
