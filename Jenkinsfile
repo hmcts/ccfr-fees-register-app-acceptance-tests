@@ -20,8 +20,8 @@ lock('Fees Register API database acceptance tests') {
 
             try {
                 stage('Start Docker Images') {
-                    env.FEES_API_DOCKER_VERSION = $ { params.feesApiDockerVersion }
-                    env.FEES_DATABASE_DOCKER_VERSION = $ { params.feesDatabaseDockerVersion }
+                    env.FEES_API_DOCKER_VERSION = ${params.feesApiDockerVersion}
+                    env.FEES_DATABASE_DOCKER_VERSION = ${params.feesDatabaseDockerVersion}
 
                     sh 'docker-compose pull'
                     sh 'docker-compose up -d fees-api'
@@ -38,7 +38,7 @@ lock('Fees Register API database acceptance tests') {
                             keepAll              : false,
                             reportDir            : 'target/site',
                             reportFiles          : 'surefire-report.html',
-                            reportName           : 'Acceptance Test Report (dev)'
+                            reportName           : 'Acceptance Test Report'
                     ])
                 }
             } finally {
