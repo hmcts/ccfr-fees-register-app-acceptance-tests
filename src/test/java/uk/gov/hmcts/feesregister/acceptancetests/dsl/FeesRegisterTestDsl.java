@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.fees.register.api.contract.FixedFeeDto;
-import uk.gov.hmcts.fees.register.api.contract.PercentageFeeDto;
+import uk.gov.hmcts.fees.register.api.contract.*;
 import uk.gov.hmcts.feesregister.acceptancetests.dto.ChargeableFeeWrapperDto;
+import uk.gov.hmcts.feesregister.acceptancetests.tokens.UserTokenFactory;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -28,19 +28,29 @@ public class FeesRegisterTestDsl {
     private final Map<String, String> headers = new HashMap<>();
     private final String baseUri;
     private Response response;
+    private final UserTokenFactory userTokenFactory;
 
     @Autowired
-    public FeesRegisterTestDsl(@Value("${base-urls.fees-register}") String baseUri) {
+    public FeesRegisterTestDsl(@Value("${base-urls.fees-register}") String baseUri, UserTokenFactory userTokenFactory) {
         this.objectMapper = new ObjectMapper();
         this.baseUri = baseUri;
+        this.userTokenFactory = userTokenFactory;
     }
 
     public FeesRegisterGivenDsl given() {
+
         return new FeesRegisterGivenDsl();
     }
 
     public class FeesRegisterGivenDsl {
+
+        public FeesRegisterGivenDsl userId(String id) {
+                headers.put("Authorization", userTokenFactory.validTokenForUser(id));
+                return this;
+            }
+
         public FeesRegisterWhenDsl when() {
+
             return new FeesRegisterWhenDsl();
         }
     }
@@ -50,12 +60,27 @@ public class FeesRegisterTestDsl {
             return RestAssured.given().baseUri(baseUri).contentType(ContentType.JSON).headers(headers);
         }
 
-       /*public FeesRegisterWhenDsl getFeeByCategoryAndAmount(String categoryId, String amount) {
-          response = newRequest().get("/fees-register/categories/{categoryId}/ranges/{amount}/fees", categoryId, amount);
-          return this;
-       }*/
+        public FeesRegisterWhenDsl createCategory(CategoryUpdateDto.CategoryUpdateDtoBuilder requestDto) {
+            response = newRequest().body(requestDto.build()).put("/categories/kk143");
+            return this;
+        }
 
-        public FeesRegisterWhenDsl getCategoryByCode(String code) {
+        public FeesRegisterWhenDsl createFees(FixedFeeDto.FixedFeeDtoBuilder requestDto) {
+            response = newRequest().body(requestDto.build()).put("/fees/krishna");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl createPercentage(PercentageFeeDto.PercentageFeeDtoBuilder requestDto) {
+            response = newRequest().body(requestDto.build()).put("/fees/cmc-percentageTest");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl createRangeGroups(RangeGroupUpdateDto.RangeGroupUpdateDtoBuilder requestDto) {
+            response = newRequest().body(requestDto.build()).put("/range-groups/cmc-testing");
+            return this;
+        }
+
+         public FeesRegisterWhenDsl getCategoryByCode(String code) {
             response = newRequest().get("/categories/{code}", code);
             return this;
         }
@@ -95,21 +120,6 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
-        /*public FeesRegisterWhenDsl getAllFlatFeesByCategoryId(String categoryId) {
-            response = newRequest().get("/fees-register/categories/{categoryId}/flat", categoryId);
-            return this;
-        }
-
-        public FeesRegisterWhenDsl getFlatFeesByCategoryId(String categoryId, String feeId) {
-            response = newRequest().get("/fees-register/categories/{categoryId}/flat/{feeId}", categoryId, feeId);
-            return this;
-        }*/
-
-       /* public FeesRegisterWhenDsl getAllFees() {
-            response = newRequest().get("/fees-register");
-            return this;
-        }*/
-
         public FeesRegisterWhenDsl getBuildInfo() {
             response = newRequest().get("/info");
             return this;
@@ -123,6 +133,30 @@ public class FeesRegisterTestDsl {
     public class FeesRegisterThenDsl {
         public FeesRegisterThenDsl notFound() {
             response.then().statusCode(404);
+            return this;
+        }
+
+        public FeesRegisterThenDsl created(Consumer<CategoryDto> feesRegisterAssertions) {
+            CategoryDto categoryDto = response.then().statusCode(200).extract().as(CategoryDto.class);
+            feesRegisterAssertions.accept(categoryDto);
+            return this;
+        }
+
+        public FeesRegisterThenDsl createdFees(Consumer<FeeDto> feesRegisterAssertions) {
+            FeeDto feeDto = response.then().statusCode(200).extract().as(FeeDto.class);
+            feesRegisterAssertions.accept(feeDto);
+            return this;
+        }
+
+        public FeesRegisterThenDsl createdPercentage(Consumer<FeeDto> feesRegisterAssertions) {
+            FeeDto feeDto = response.then().statusCode(200).extract().as(FeeDto.class);
+            feesRegisterAssertions.accept(feeDto);
+            return this;
+        }
+
+        public FeesRegisterThenDsl createdRangeGroups(Consumer<RangeGroupDto> feesRegisterAssertions) {
+            RangeGroupDto RangeGroupDto = response.then().statusCode(200).extract().as(RangeGroupDto.class);
+            feesRegisterAssertions.accept(RangeGroupDto);
             return this;
         }
 
