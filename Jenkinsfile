@@ -1,5 +1,5 @@
 #!groovy
-
+@Library("Reform")
 def rtMaven = Artifactory.newMavenBuild()
 
 properties([
