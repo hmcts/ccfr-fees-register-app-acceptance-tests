@@ -10,12 +10,12 @@ services:
 
   fees-api:
     image: docker.artifactory.reform.hmcts.net/fees-register/fees-api:${FEES_API_DOCKER_VERSION:-latest}
-    container_name: fees-api
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://fees-database:5432/fees_register
       - SPRING_DATASOURCE_USERNAME=fees_register
       - SPRING_DATASOURCE_PASSWORD=fees_register
-      - AUTH_IDAM_CLIENT_BASEURL=https://idam-api:8080
+      - AUTH_IDAM_CLIENT_BASEURL=http://idam-api:8080
+      - ROOT_APPENDER=JSON_CONSOLE
     ports:
       - 4411:8080
     links:
@@ -27,7 +27,6 @@ services:
 
   fees-database:
     image: docker.artifactory.reform.hmcts.net/fees-register/fees-database:${FEES_DATABASE_DOCKER_VERSION:-latest}
-    container_name: fees-database
     environment:
       - FEES_REGISTER_DB_USERNAME=fees_register
       - FEES_REGISTER_DB_PASSWORD=fees_register
@@ -35,7 +34,6 @@ services:
   idam-api:
     image: docker.artifactory.reform.hmcts.net/auth/idam-api
     command: --wait-for-database 30
-    container_name: idam-api
     environment:
       - IDAM_SUPERUSER_EMAIL
       - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
@@ -45,6 +43,7 @@ services:
       - http_proxy=
       - https_proxy=
       - no_proxy=
+      - ROOT_APPENDER=JSON_CONSOLE
     ports:
       - 4551:8080
     links:
@@ -53,5 +52,4 @@ services:
       - idam-database
 
   idam-database:
-    container_name: idam-database
     image: docker.artifactory.reform.hmcts.net/auth/idam-database
