@@ -28,7 +28,7 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
             .description("New Description")
             .rangeGroupCode("cmc-online")
             .feeCodes(asList("X0026", "X0027"));
-
+    @Ignore
     @Test
     public void createCategoriesCode201() throws IOException {
         scenario.given().userId("1")
@@ -43,7 +43,7 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
             .code("X0434")
             .description("Civil Court fees - Money Claims Online - Claim Amount - 10000.01 upto 15000 GBP. Fees are 4.5% of the claim value")
             .percentage(BigDecimal.valueOf(4.5));
-
+    @Ignore
     @Test
     public void createPercentage201() throws IOException {
         scenario.given().userId("1")
@@ -58,7 +58,7 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
             .code("X0999")
             .description("New Description")
             .amount(101);
-
+    @Ignore
     @Test
     public void createFeesCode201() throws IOException {
         scenario.given().userId("1")
@@ -76,7 +76,7 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
                     new RangeGroupUpdateDto.RangeUpdateDto(1001, null, "X0047")
 
             ));
-
+    @Ignore
     @Test
     public void createRangeGroup201() throws IOException {
         scenario.given().userId("1")
