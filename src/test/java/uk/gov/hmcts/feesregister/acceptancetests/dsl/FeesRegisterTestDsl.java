@@ -115,6 +115,11 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
+        public FeesRegisterWhenDsl getCMCPaperCalculationsUnspecified() {
+            response = newRequest().get("/range-groups/cmc-paper/calculations/unspecified");
+            return this;
+        }
+
         public FeesRegisterWhenDsl getAllRangeGroups() {
             response = newRequest().get("/range-groups");
             return this;

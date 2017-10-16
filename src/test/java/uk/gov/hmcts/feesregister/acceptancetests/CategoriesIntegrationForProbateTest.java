@@ -87,8 +87,36 @@ public class CategoriesIntegrationForProbateTest extends IntegrationTestBase {
     @Test
     public void findPercentageFeesForRangeGroup() throws IOException {
         scenario.given()
-                .when().getRangeGroupByCaluclations("cmc-online", 1500000)
-                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",67500));
+                .when().getRangeGroupByCaluclations("probate-personal", 499999)
+                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",0));
+    }
+
+    @Test
+    public void findPercentageFeesForProbatePersonalRangeGroup() throws IOException {
+        scenario.given()
+                .when().getRangeGroupByCaluclations("probate-personal", 4999999)
+                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",6000));
+    }
+
+    @Test
+    public void findPercentageFeesForProbateEstate() throws IOException {
+        scenario.given()
+                .when().getRangeGroupByCaluclations("probate-estate", 499999)
+                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",0));
+    }
+
+    @Test
+    public void findPercentageFeesForProbateEstateRangeGroup() throws IOException {
+        scenario.given()
+                .when().getRangeGroupByCaluclations("probate-estate", 500000)
+                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",15500));
+    }
+
+    @Test
+    public void findPercentageFeesForProbateEstateRangeGroupMaximumValue() throws IOException {
+        scenario.given()
+                .when().getRangeGroupByCaluclations("probate-estate", 500000000)
+                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",15500));
     }
 
     @Test
