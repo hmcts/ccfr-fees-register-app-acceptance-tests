@@ -157,6 +157,13 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
     }
 
     @Test
+    public void findCMCPaperCalculationUnspecified() throws IOException {
+        scenario.given()
+                .when().getCMCPaperCalculationsUnspecified()
+                .then().got(CalculationDto.class, calculatedFee -> assertThat(calculatedFee).hasFieldOrPropertyWithValue("amount",1000000));
+    }
+
+    @Test
     public void findFeesByPercentageForBadRequest() throws IOException {
         scenario.given()
                 .when().getFeesByCaluclations("X04341", 1500000001)
