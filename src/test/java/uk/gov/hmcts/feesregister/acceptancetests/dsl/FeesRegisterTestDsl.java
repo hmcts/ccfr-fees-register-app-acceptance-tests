@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.fees.register.api.contract.*;
+import uk.gov.hmcts.fees2.register.api.contract.*;
 import uk.gov.hmcts.feesregister.acceptancetests.dto.ChargeableFeeWrapperDto;
 import uk.gov.hmcts.feesregister.acceptancetests.tokens.UserTokenFactory;
 
@@ -127,6 +128,43 @@ public class FeesRegisterTestDsl {
 
         public FeesRegisterWhenDsl getBuildInfo() {
             response = newRequest().get("/info");
+            return this;
+        }
+        public FeesRegisterWhenDsl getAllAmountTypes() {
+            response = newRequest().get("/amounttypes");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getAllchannelTypes() {
+            response = newRequest().get("/channeltypes");
+            return this;
+        }
+        public FeesRegisterWhenDsl getAllDirectionTypes() {
+            response = newRequest().get("/directiontypes");
+            return this;
+        }
+        public FeesRegisterWhenDsl getAllEventTypes() {
+            response = newRequest().get("/eventtypes");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getAllFeeTypes() {
+            response = newRequest().get("/feetypes");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getAllJurisdictions1Types() {
+            response = newRequest().get("/jurisdictions1");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getAllJurisdictions2Types() {
+            response = newRequest().get("/jurisdictions2");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getAllServiceTypes() {
+            response = newRequest().get("/servicetypes");
             return this;
         }
 
