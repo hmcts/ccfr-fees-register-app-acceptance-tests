@@ -20,16 +20,10 @@ import static uk.gov.hmcts.fees.register.api.contract.RangeGroupDto.rangeGroupDt
 import static uk.gov.hmcts.fees.register.api.contract.RangeGroupUpdateDto.rangeGroupUpdateDtoWith;
 
 
-public class Fees2APIToRetrieveTheCorrectFee extends IntegrationTestBase{
+public class Fees2APIToRetrieveTheCorrectFeeTest extends IntegrationTestBase{
     @Autowired
     private FeesRegisterTestDsl scenario;
 
-    @Test
-    public void findAllAmountTypes() throws IOException, NoSuchFieldException {
-        scenario.given()
-                .when().getAllAmountTypes()
-                .then().got(List.class, (result -> assertThat(result).isNotEmpty()));
-    }
     @Test
     public void findAllchannelTypes() throws IOException, NoSuchFieldException {
         scenario.given()
@@ -48,13 +42,6 @@ public class Fees2APIToRetrieveTheCorrectFee extends IntegrationTestBase{
     public void findAllEventTypes() throws IOException, NoSuchFieldException {
         scenario.given()
                 .when().getAllEventTypes()
-                .then().got(List.class, (result -> assertThat(result).isNotEmpty()));
-    }
-
-    @Test
-    public void findAllFeeTypes() throws IOException, NoSuchFieldException {
-        scenario.given()
-                .when().getAllFeeTypes()
                 .then().got(List.class, (result -> assertThat(result).isNotEmpty()));
     }
 

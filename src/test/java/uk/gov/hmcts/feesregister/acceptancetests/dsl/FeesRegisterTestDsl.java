@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.fees.register.api.contract.*;
 import uk.gov.hmcts.fees2.register.api.contract.*;
+import uk.gov.hmcts.fees2.register.api.contract.request.ApproveFeeDto;
+import uk.gov.hmcts.fees2.register.api.contract.request.CreateRangedFeeDto;
+import uk.gov.hmcts.fees2.register.api.contract.request.CreateFixedFeeDto;
 import uk.gov.hmcts.feesregister.acceptancetests.dto.ChargeableFeeWrapperDto;
 import uk.gov.hmcts.feesregister.acceptancetests.tokens.UserTokenFactory;
 
@@ -66,6 +69,21 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
+        public FeesRegisterWhenDsl createRangedFee(CreateRangedFeeDto requestDto) {
+            response = newRequest().body(requestDto).post("/fees-register/rangedfees");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl createFixedFee(CreateFixedFeeDto requestDto) {
+            response = newRequest().body(requestDto).post("/fees-register/fixedfees");
+            return this;
+        }
+
+        public FeesRegisterWhenDsl approvedFeeCode(ApproveFeeDto requestDto) {
+            response = newRequest().body(requestDto).patch("/fees-register/fees/approve");
+            return this;
+        }
+
         public FeesRegisterWhenDsl createFees(FixedFeeDto.FixedFeeDtoBuilder requestDto) {
             response = newRequest().body(requestDto.build()).put("/fees/krishna");
             return this;
@@ -86,6 +104,17 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
+        public FeesRegisterWhenDsl getLookUpResponse(String service, String jurisdiction1, String jurisdiction2, String channel, String event) {
+            response = newRequest().get("/fees-register/lookup?service={service}&jurisdiction1={jurisdiction1}&jurisdiction2={jurisdiction2}&channel={channel}&event={event}",
+                    service, jurisdiction1, jurisdiction2, channel, event);
+            return this;
+        }
+
+        public FeesRegisterWhenDsl deleteFeeCode(String code) {
+            response = newRequest().delete("/fees-register/fees/{code}", code);
+            return this;
+        }
+
         public FeesRegisterWhenDsl getAllCategories() {
             response = newRequest().get("/categories");
             return this;
@@ -101,11 +130,15 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
+        public FeesRegisterWhenDsl getFeeCodeAndVerifyStatus(String code) {
+            response = newRequest().get("/fees-register/fees/{code}", code);
+            return this;
+        }
+
         public FeesRegisterWhenDsl getAllFees() {
             response = newRequest().get("/fees");
             return this;
         }
-
         public FeesRegisterWhenDsl getRangeGroupsByCode(String code) {
             response = newRequest().get("/range-groups/{code}", code);
             return this;
@@ -131,51 +164,67 @@ public class FeesRegisterTestDsl {
             return this;
         }
         public FeesRegisterWhenDsl getAllAmountTypes() {
-            response = newRequest().get("/amounttypes");
+            response = newRequest().get("/fees-register/amounttypes");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllchannelTypes() {
-            response = newRequest().get("/channeltypes");
+            response = newRequest().get("/fees-register/channeltypes");
             return this;
         }
         public FeesRegisterWhenDsl getAllDirectionTypes() {
-            response = newRequest().get("/directiontypes");
+            response = newRequest().get("/fees-register/directiontypes");
             return this;
         }
         public FeesRegisterWhenDsl getAllEventTypes() {
-            response = newRequest().get("/eventtypes");
+            response = newRequest().get("/fees-register/eventtypes");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllFeeTypes() {
-            response = newRequest().get("/feetypes");
+            response = newRequest().get("/fees-register/feetypes");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllJurisdictions1Types() {
-            response = newRequest().get("/jurisdictions1");
+            response = newRequest().get("/fees-register/jurisdictions1");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllJurisdictions2Types() {
-            response = newRequest().get("/jurisdictions2");
+            response = newRequest().get("/fees-register/jurisdictions2");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllServiceTypes() {
-            response = newRequest().get("/servicetypes");
+            response = newRequest().get("/fees-register/servicetypes");
             return this;
         }
+
 
         public FeesRegisterThenDsl then() {
             return new FeesRegisterThenDsl();
         }
+
     }
 
     public class FeesRegisterThenDsl {
+
+        private RequestSpecification newRequest() {
+            return RestAssured.given().baseUri(baseUri).contentType(ContentType.JSON).headers(headers);
+        }
+
         public FeesRegisterThenDsl notFound() {
             response.then().statusCode(404);
+            return this;
+        }
+        public FeesRegisterThenDsl deleteFeeCode1(String code) {
+            response = newRequest().delete("/fees-register/fees/{code}", code);
+            return this;
+        }
+
+        public FeesRegisterThenDsl getFeeCodeAndVerifyStatus1(String code) {
+            response = newRequest().get("/fees-register/fees/{code}", code);
             return this;
         }
 
@@ -203,6 +252,12 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
+        public FeesRegisterThenDsl createdRangedFee(Consumer<CreateRangedFeeDto> feesRegisterAssertions) {
+            CreateRangedFeeDto CreateRangedFeeDto = response.then().statusCode(201).extract().as(CreateRangedFeeDto.class);
+            feesRegisterAssertions.accept(CreateRangedFeeDto);
+            return this;
+        }
+
         public FeesRegisterThenDsl badRequest() {
             response.then().statusCode(400);
             return this;
@@ -211,6 +266,16 @@ public class FeesRegisterTestDsl {
 
         public FeesRegisterThenDsl ok() {
             response.then().statusCode(200);
+            return this;
+        }
+
+        public FeesRegisterThenDsl isDeleted() {
+            response.then().statusCode(204);
+            return this;
+        }
+
+        public FeesRegisterThenDsl isCreated() {
+            response.then().statusCode(201);
             return this;
         }
 
