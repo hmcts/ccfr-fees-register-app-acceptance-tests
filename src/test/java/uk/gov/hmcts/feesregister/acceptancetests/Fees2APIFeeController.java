@@ -1,6 +1,5 @@
 package uk.gov.hmcts.feesregister.acceptancetests;
 
-import com.sun.javafx.binding.StringFormatter;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.junit.AfterClass;
