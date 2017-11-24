@@ -20,7 +20,7 @@ import static uk.gov.hmcts.fees.register.api.contract.RangeGroupDto.rangeGroupDt
 import static uk.gov.hmcts.fees.register.api.contract.RangeGroupUpdateDto.rangeGroupUpdateDtoWith;
 
 
-public class Fees2APIToRetrieveTheCorrectFeeTest extends IntegrationTestBase{
+public class Fees2APIToRetrieveTheCorrectFee extends IntegrationTestBase{
     @Autowired
     private FeesRegisterTestDsl scenario;
 
