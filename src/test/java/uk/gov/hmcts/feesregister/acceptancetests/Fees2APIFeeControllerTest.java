@@ -80,6 +80,7 @@ public class Fees2APIFeeControllerTest extends IntegrationTestBase{
         return new ApproveFeeDto(feeCode, 1);
     }
 
+    @Ignore
     @Test
     public void createFixedFees201() throws IOException {
 
