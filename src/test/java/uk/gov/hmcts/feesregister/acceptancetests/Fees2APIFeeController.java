@@ -60,7 +60,7 @@ public class Fees2APIFeeController extends IntegrationTestBase{
 
         scenario.given().userId("1")
                 .when().createRangedFee(proposeRangedFees).approvedFeeCode(approveFeeCode)
-                .then().ok().getFeeCodeAndVerifyStatus1(feeCode).got(Fee2Dto.class, fee2Dtos -> {
+                .then().noContent().getFeeCodeAndVerifyStatus1(feeCode).got(Fee2Dto.class, fee2Dtos -> {
             assertThat(fee2Dtos.getFeeVersionDtos().get(0).getStatus()).isEqualTo(FeeVersionStatus.approved);
         }).deleteFeeCode1(feeCode).isDeleted();
     }
