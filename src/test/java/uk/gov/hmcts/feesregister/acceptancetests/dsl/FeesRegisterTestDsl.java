@@ -274,6 +274,11 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
+        public FeesRegisterThenDsl noContent() {
+            response.then().statusCode(204);
+            return this;
+        }
+
         public FeesRegisterThenDsl isCreated() {
             response.then().statusCode(201);
             return this;
