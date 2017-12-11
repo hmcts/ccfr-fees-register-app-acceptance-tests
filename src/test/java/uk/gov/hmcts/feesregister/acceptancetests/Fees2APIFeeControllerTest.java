@@ -98,7 +98,8 @@ public class Fees2APIFeeControllerTest extends IntegrationTestBase{
         DateTime to = new DateTime();
         to.plusDays(90);
         FeeVersionDto version = new FeeVersionDto(1, new Date(), to.toDate(), "Testing", FeeVersionStatus.approved, amount, null);
-        CreateFixedFeeDto createfixedfee = new CreateFixedFeeDto(feeCode, version, "family","family court", "divorce", "online", "enhanced","issue", "Test memo line", "CMC online fee order name","Natural code 001");
+        //CreateFixedFeeDto createfixedfee = new CreateFixedFeeDto(feeCode, version, "family","family court", "divorce", "online", "enhanced","issue", "Test memo line", "CMC online fee order name","Natural code 001");
+        CreateFixedFeeDto createfixedfee = new CreateFixedFeeDto(feeCode, version, "family","family court", "divorce", "online", "enhanced","issue", "Test memo line", "feeOrderName","naturalAccountCode","statutory","CMC online fee order name",false);
         createfixedfee.setUnspecifiedClaimAmount(false);
         return createfixedfee;
     }
@@ -133,7 +134,7 @@ public class Fees2APIFeeControllerTest extends IntegrationTestBase{
         DateTime to = new DateTime();
         to.plusDays(90);
         FeeVersionDto version = new FeeVersionDto(1, new Date(), to.toDate(), "Testing", FeeVersionStatus.approved, amount, null);
-        CreateFixedFeeDto createfixedfeeforunspecified = new CreateFixedFeeDto(feeCode2, version, "family","family court", "divorce", "online", "enhanced","issue", "Test memo line", "CMC online fee order name","Natural code 001");
+        CreateFixedFeeDto createfixedfeeforunspecified = new CreateFixedFeeDto(feeCode2, version, "family","family court", "divorce", "online", "enhanced","issue", "Test memo line","feeOrderName","naturalAccountCode", "CMC online fee order name","siRefId",true);
         createfixedfeeforunspecified.setUnspecifiedClaimAmount(true);
         return createfixedfeeforunspecified;
     }
