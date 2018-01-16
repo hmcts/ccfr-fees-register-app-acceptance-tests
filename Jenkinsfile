@@ -3,7 +3,7 @@
 def rtMaven = Artifactory.newMavenBuild()
 
 properties([
-        [$class: 'GithubProjectProperty', displayName: 'Fees Register API database acceptance tests', projectUrlStr: 'https://git.reform.hmcts.net/fees-register/fees-register-app-database-acceptance-tests'],
+        [$class: 'GithubProjectProperty', displayName: 'Fees Register API database acceptance tests', projectUrlStr: 'https://github.com/hmcts/ccfr-fees-register-app-acceptance-tests'],
         parameters([
                 string(defaultValue: 'latest', description: 'fees-api Docker Version', name: 'feesApiDockerVersion'),
                 string(defaultValue: 'latest', description: 'fees-database Docker Version', name: 'feesDatabaseDockerVersion')
