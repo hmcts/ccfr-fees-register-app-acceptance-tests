@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.fees.register.api.contract.*;
 import uk.gov.hmcts.fees2.register.api.contract.*;
-import uk.gov.hmcts.fees2.register.api.contract.request.ApproveFeeDto;
+//import uk.gov.hmcts.fees2.register.api.contract.request.ApproveFeeDto;
 import uk.gov.hmcts.fees2.register.api.contract.request.CreateRangedFeeDto;
 import uk.gov.hmcts.fees2.register.api.contract.request.CreateFixedFeeDto;
 import uk.gov.hmcts.feesregister.acceptancetests.dto.ChargeableFeeWrapperDto;
@@ -79,10 +79,10 @@ public class FeesRegisterTestDsl {
             return this;
         }
 
-        public FeesRegisterWhenDsl approvedFeeCode(ApproveFeeDto requestDto) {
-            response = newRequest().body(requestDto).patch("/fees-register/fees/approve");
-            return this;
-        }
+     //   public FeesRegisterWhenDsl approvedFeeCode(ApproveFeeDto requestDto) {
+       //     response = newRequest().body(requestDto).patch("/fees-register/fees/approve");
+         //   return this;
+        //}
 
         public FeesRegisterWhenDsl createFees(FixedFeeDto.FixedFeeDtoBuilder requestDto) {
             response = newRequest().body(requestDto.build()).put("/fees/krishna");
@@ -105,8 +105,14 @@ public class FeesRegisterTestDsl {
         }
 
         public FeesRegisterWhenDsl getLookUpResponse(String service, String jurisdiction1, String jurisdiction2, String channel, String event) {
-            response = newRequest().get("/fees-register/lookup?service={service}&jurisdiction1={jurisdiction1}&jurisdiction2={jurisdiction2}&channel={channel}&event={event}",
+            response = newRequest().get("/fees-register/fees/lookup?service={service}&jurisdiction1={jurisdiction1}&jurisdiction2={jurisdiction2}&channel={channel}&event={event}",
                     service, jurisdiction1, jurisdiction2, channel, event);
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getLookUpForCMCResponse(String service, String jurisdiction1, String jurisdiction2, String channel, String event, double amount_or_volume) {
+            response = newRequest().get("/fees-register/fees/lookup?service={service}&jurisdiction1={jurisdiction1}&jurisdiction2={jurisdiction2}&channel={channel}&event={event}&amount_or_volume={amount_or_volume}",
+                    service, jurisdiction1, jurisdiction2, channel, event, amount_or_volume);
             return this;
         }
 
@@ -164,40 +170,40 @@ public class FeesRegisterTestDsl {
             return this;
         }
         public FeesRegisterWhenDsl getAllAmountTypes() {
-            response = newRequest().get("/fees-register/amounttypes");
+            response = newRequest().get("/amounttypes");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllchannelTypes() {
-            response = newRequest().get("/fees-register/channeltypes");
+            response = newRequest().get("/channel-types");
             return this;
         }
         public FeesRegisterWhenDsl getAllDirectionTypes() {
-            response = newRequest().get("/fees-register/directiontypes");
+            response = newRequest().get("/direction-types");
             return this;
         }
         public FeesRegisterWhenDsl getAllEventTypes() {
-            response = newRequest().get("/fees-register/eventtypes");
+            response = newRequest().get("/event-types");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllFeeTypes() {
-            response = newRequest().get("/fees-register/feetypes");
+            response = newRequest().get("/feetypes");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllJurisdictions1Types() {
-            response = newRequest().get("/fees-register/jurisdictions1");
+            response = newRequest().get("/jurisdictions1");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllJurisdictions2Types() {
-            response = newRequest().get("/fees-register/jurisdictions2");
+            response = newRequest().get("/jurisdictions2");
             return this;
         }
 
         public FeesRegisterWhenDsl getAllServiceTypes() {
-            response = newRequest().get("/fees-register/servicetypes");
+            response = newRequest().get("/service-types");
             return this;
         }
 
