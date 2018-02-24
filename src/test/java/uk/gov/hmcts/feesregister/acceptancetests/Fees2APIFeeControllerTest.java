@@ -35,7 +35,7 @@ import static uk.gov.hmcts.fees2.register.api.contract.request.CreateRangedFeeDt
 //import static uk.gov.hmcts.fees2.register.api.contract.request.ApproveFeeDto.*;
 import static uk.gov.hmcts.fees2.register.api.contract.request.CreateFixedFeeDto.*;
 
-public class Fees2APIFeeController extends IntegrationTestBase{
+public class Fees2APIFeeControllerTest extends IntegrationTestBase{
 
     @Autowired
     private FeesRegisterTestDsl scenario;
