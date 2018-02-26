@@ -48,7 +48,7 @@ public class Fees2APIFeeControllerTest extends IntegrationTestBase{
 
     CreateFixedFeeDto proposeFixedFees;
 
-   /* ApproveFeeDto approveFeeCode;
+  /* ApproveFeeDto approveFeeCode;
 
     @Test
     public void createRangedFees201() throws IOException {
@@ -102,7 +102,7 @@ public class Fees2APIFeeControllerTest extends IntegrationTestBase{
         CreateFixedFeeDto createfixedfee = new CreateFixedFeeDto(feeCode, version, "family","family court", "divorce", "online", "enhanced","issue", "Test memo line", "feeOrderName","naturalAccountCode","statutory","CMC online fee order name",false);
         createfixedfee.setUnspecifiedClaimAmount(false);
         return createfixedfee;
-    } */
+    }*/
 
     @Test
     public void getlookupresponseMessageForDivorce() throws IOException {
@@ -664,6 +664,42 @@ public class Fees2APIFeeControllerTest extends IntegrationTestBase{
             assertThat(FeeLookupResponseDto.getCode()).isEqualTo("X0053");
             assertThat(FeeLookupResponseDto.getVersion()).isEqualTo(1);
             assertThat(FeeLookupResponseDto.getFeeAmount()).isEqualTo("335.00");
+        });
+    }
+
+    @Test
+    public void getlookupresponseMessageForProbate() throws IOException {
+
+        scenario.given()
+                .when().getLookUpForCMCResponse("probate", "family","probate registry", "default", "issue", 5000.01)
+                .then().ok().got(FeeLookupResponseDto.class, FeeLookupResponseDto -> {
+            assertThat(FeeLookupResponseDto.getCode()).isEqualTo("X0249");
+            assertThat(FeeLookupResponseDto.getVersion()).isEqualTo(1);
+            assertThat(FeeLookupResponseDto.getFeeAmount()).isEqualTo("155.00");
+        });
+    }
+
+    @Test
+    public void getlookupresponseMessageForProbateCopies() throws IOException {
+
+        scenario.given()
+                .when().getLookUpForCMCResponse("probate", "family","probate registry", "default", "copies", 5000)
+                .then().ok().got(FeeLookupResponseDto.class, FeeLookupResponseDto -> {
+            assertThat(FeeLookupResponseDto.getCode()).isEqualTo("X0258");
+            assertThat(FeeLookupResponseDto.getVersion()).isEqualTo(1);
+            assertThat(FeeLookupResponseDto.getFeeAmount()).isEqualTo("2500.00");
+        });
+    }
+
+    @Test
+    public void getlookupresponseMessageForProbateCopies2() throws IOException {
+
+        scenario.given()
+                .when().getLookUpForCMCResponse("probate", "family","probate registry", "default", "copies", 1)
+                .then().ok().got(FeeLookupResponseDto.class, FeeLookupResponseDto -> {
+            assertThat(FeeLookupResponseDto.getCode()).isEqualTo("X0258");
+            assertThat(FeeLookupResponseDto.getVersion()).isEqualTo(1);
+            assertThat(FeeLookupResponseDto.getFeeAmount()).isEqualTo("0.50");
         });
     }
 

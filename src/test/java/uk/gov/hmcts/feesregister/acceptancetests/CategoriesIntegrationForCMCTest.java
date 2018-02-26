@@ -32,7 +32,7 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
     @Ignore
     @Test
     public void createCategoriesCode201() throws IOException {
-        scenario.given().userId("1")
+        scenario.given().userId("80")
                 .when().createCategory(proposeCategory)
                 .then().created((categoryDto -> {
                     assertThat(categoryDto.getDescription()).isEqualTo("New Description");
