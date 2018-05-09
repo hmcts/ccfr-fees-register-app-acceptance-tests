@@ -21,6 +21,7 @@ import uk.gov.hmcts.feesregister.acceptancetests.dto.ChargeableFeeWrapperDto;
 import uk.gov.hmcts.feesregister.acceptancetests.tokens.UserTokenFactory;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -113,6 +114,12 @@ public class FeesRegisterTestDsl {
         public FeesRegisterWhenDsl getLookUpForCMCResponse(String service, String jurisdiction1, String jurisdiction2, String channel, String event, double amount_or_volume) {
             response = newRequest().get("/fees-register/fees/lookup?service={service}&jurisdiction1={jurisdiction1}&jurisdiction2={jurisdiction2}&channel={channel}&event={event}&amount_or_volume={amount_or_volume}",
                     service, jurisdiction1, jurisdiction2, channel, event, amount_or_volume);
+            return this;
+        }
+
+        public FeesRegisterWhenDsl getLookUpForProbateResponse(String service, String jurisdiction1, String jurisdiction2, String channel, String event, String applicant_type, BigDecimal amount_or_volume) {
+            response = newRequest().get("/fees-register/fees/lookup?service={service}&jurisdiction1={jurisdiction1}&jurisdiction2={jurisdiction2}&channel={channel}&event={event}&applicant_type={applicant_type}&amount_or_volume={amount_or_volume}",
+                    service, jurisdiction1, jurisdiction2, channel, event,applicant_type, amount_or_volume);
             return this;
         }
 

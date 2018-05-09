@@ -16,6 +16,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=fees_register
       - AUTH_IDAM_CLIENT_BASEURL=http://idam-api:8080
       - ROOT_APPENDER=JSON_CONSOLE
+      - spring_profiles_active=embedded
     ports:
       - 4411:8080
     links:
@@ -32,24 +33,38 @@ services:
       - FEES_REGISTER_DB_PASSWORD=fees_register
 
   idam-api:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-api
-    command: --wait-for-database 30
+    image: docker.artifactory.reform.hmcts.net/auth/idam-api:f0c89985670e19f808189cbd43bf19df98b8e41a
+    build:
+     context: .
+    container_name: idam-api
     environment:
       - IDAM_SUPERUSER_EMAIL
       - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
       - SPRING_PROFILES_ACTIVE=test
       - IDAM_TESTING_SUPPORT_ENABLED=true
       - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
+      - IDAM_AUTHENTICATION_WEB_HOST=https://authentication-web:8000
+      - IDAM_REGISTRATION_WEB_HOST=https://www-local.registration.reform.hmcts.net:9000
+      - IDAM_PROBATE_URL=https://www-local.registration.reform.hmcts.net:9000/poc/probate
+      - IDAM_CMC_URL=https://www-local.registration.reform.hmcts.net:9000/poc
+      - IDAM_DIVORCE_URL=https://www-local.registration.reform.hmcts.net:9000/poc/divorce
+      - IDAM_SSCS_URL=https://www-local.registration.reform.hmcts.net:9000/poc
+      - IDAM_CCD_URL=https://www-local.registration.reform.hmcts.net:9000/poc/ccd
+      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_REGISTRATION_WEB=QM5RQQ53LZFOSIXJ
+      - REFORM_ENVIRONMENT=test
       - http_proxy=
       - https_proxy=
       - no_proxy=
-      - ROOT_APPENDER=JSON_CONSOLE
     ports:
       - 4551:8080
     links:
       - idam-database
     depends_on:
-      - idam-database
+      idam-database:
+        condition: service_healthy
 
   idam-database:
-    image: docker.artifactory.reform.hmcts.net/auth/idam-database
+      image: docker.artifactory.reform.hmcts.net/auth/idam-database
+      container_name: idam-database
+      ports:
+        - 5431:5432

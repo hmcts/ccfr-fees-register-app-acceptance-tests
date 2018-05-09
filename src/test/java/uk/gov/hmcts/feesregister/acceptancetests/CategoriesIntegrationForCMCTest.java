@@ -32,7 +32,8 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
     @Ignore
     @Test
     public void createCategoriesCode201() throws IOException {
-        scenario.given().userId("80")
+        scenario.given()
+                .userId("1")
                 .when().createCategory(proposeCategory)
                 .then().created((categoryDto -> {
                     assertThat(categoryDto.getDescription()).isEqualTo("New Description");
@@ -44,11 +45,11 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
             .code("X0434")
             .description("Civil Court fees - Money Claims Online - Claim Amount - 10000.01 upto 15000 GBP. Fees are 4.5% of the claim value")
             .percentage(BigDecimal.valueOf(4.5));
-
     @Ignore
     @Test
     public void createPercentage201() throws IOException {
-        scenario.given().userId("1")
+        scenario.given()
+                //.userId("1")
                 .when().createPercentage(proposePercentage)
                 .then().createdPercentage((feeDto -> {
                     assertThat(feeDto.getDescription()).isEqualTo("Civil Court fees - Money Claims Online - Claim Amount - 10000.01 upto 15000 GBP. Fees are 4.5% of the claim value");
@@ -60,11 +61,11 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
             .code("X0999")
             .description("New Description")
             .amount(101);
-
     @Ignore
     @Test
     public void createFeesCode201() throws IOException {
-        scenario.given().userId("1")
+        scenario.given()
+                .userId("80")
                 .when().createFees(proposeFees)
                 .then().createdFees((feeDto -> {
                     assertThat(feeDto.getDescription()).isEqualTo("New Description");
@@ -79,11 +80,11 @@ public class CategoriesIntegrationForCMCTest extends IntegrationTestBase {
                     new RangeGroupUpdateDto.RangeUpdateDto(1001, null, "X0047")
 
             ));
-
     @Ignore
     @Test
     public void createRangeGroup201() throws IOException {
-        scenario.given().userId("1")
+        scenario.given()
+                //.userId("1")
                 .when().createRangeGroups(proposeRangeGroup)
                 .then().createdRangeGroups((reangeGroupDto -> {
                     assertThat(reangeGroupDto.getDescription()).isEqualTo("New Description");
